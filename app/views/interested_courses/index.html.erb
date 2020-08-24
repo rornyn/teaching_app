@@ -1,0 +1,25 @@
+<h1>Student</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @interested_courses.each do |interested_course| %>
+      <tr>
+        <td><%= interested_course.student_name %></td>
+        <td>
+          <% if interested_course.pending? %>
+            <%= link_to 'Approved', course_interested_course_path(@course, interested_course), method: :put %></td>
+          <% else %>
+            <strong> <%= InterestedCourse::Status[interested_course.status.to_sym]  %></strong>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

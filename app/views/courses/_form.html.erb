@@ -11,42 +11,32 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :content %>
-    <%= form.text_area :content %>
+    <%= form.text_area :content, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :start_dt %>
-    <%= form.datetime_select :start_dt %>
+    <%= form.datetime_select :start_dt, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :end_dt %>
-    <%= form.datetime_select :end_dt %>
+    <%= form.datetime_select :end_dt, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.number_field :status %>
-  </div>
-
-  <div class="field">
-    <%= form.label :teacher_id %>
-    <%= form.number_field :teacher_id %>
-  </div>
-
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :student_length %>
-    <%= form.number_field :student_length %>
+    <%= form.number_field :student_length, min: 1 %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: 'btn btn-default' %>
   </div>
 <% end %>

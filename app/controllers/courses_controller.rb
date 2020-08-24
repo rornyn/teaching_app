@@ -1,10 +1,17 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :admin_not_allowed
+  before_action :check_role, except: [:index, :show]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :join_program]
+
 
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    if current_user.teacher?
+      @courses = current_user.courses
+    else
+      @courses = Course.approved.includes(:interested_courses).all
+    end
   end
 
   # GET /courses/1
@@ -14,7 +21,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/new
   def new
-    @course = Course.new
+    @course = current_user.courses.new
   end
 
   # GET /courses/1/edit
@@ -24,7 +31,7 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
-    @course = Course.new(course_params)
+    @course = current_user.courses.new(course_params)
 
     respond_to do |format|
       if @course.save
@@ -61,6 +68,7 @@ class CoursesController < ApplicationController
     end
   end
 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course
@@ -69,6 +77,19 @@ class CoursesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_params
-      params.fetch(:course, {})
+       params.require(:course).permit(:title, :content, :start_dt, :end_dt, :student_length)
+    end
+
+    def check_role
+      if current_user.student?
+        flash[:error] = "You don't have access to perform this action."
+        redirect_to root_path and return
+      end
+    end
+
+    def admin_not_allowed
+      if current_user.admin?
+        redirect_to admin_courses_path and return
+      end
     end
 end

@@ -8,6 +8,10 @@ class InterestedCourse < ApplicationRecord
 
   after_initialize :set_default_status,  if: :new_record?
 
+  validates_uniqueness_of :course_id, :scope => [ :student_id ]
+
+  delegate :name, to: :student, prefix: :student, allow_nil: true
+
   private
 
   def set_default_status
