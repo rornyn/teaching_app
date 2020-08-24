@@ -1,0 +1,6 @@
+<% if current_user.student? %>
+  <li><%= link_to 'All Course', courses_path %></li>
+<% elsif current_user.teacher? %>
+  <li><%= link_to 'My Courses', courses_path %></li>
+  <li><%= link_to 'Add Courses', new_course_path %></li>
+<% end %>
