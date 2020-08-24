@@ -19,6 +19,8 @@ class InterestedCoursesController < ApplicationController
     if current_user.teacher?
       interested_course = @course.interested_courses.where(id: params[:id]).first
       interested_course.approved!
+      options = {course_id: @course.id, user_email: current_user.email}
+      CourseMailer.with(options).join_request_approved.deliver_now
       flash[:notice] = "Request approved"
     else
       flash[:error] = "Unauthorize access"
