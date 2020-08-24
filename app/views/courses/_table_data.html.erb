@@ -1,0 +1,18 @@
+<% @courses.each do |course| %>
+  <tr >
+    <td><%= course.title %></td>
+    <td><%= course.content %></td>
+    <td><%= course.start_dt %></td>
+    <td><%= course.end_dt %></td>
+    <td><%= course.student_length %></td>
+    <td><%= link_to 'Show', course %></td>
+    <td><%= link_to 'Comments', course_comments_path(course) %></td>
+    <td>
+      <% if course.join_by_student?(current_user.id) %>
+        <strong> <%= get_request_status(course) %> </strong>
+      <% else %>
+        <%= link_to 'Join', course_interested_courses_path(course), method: :post %>
+      <%end%>
+    </td>
+  </tr>
+<% end %>

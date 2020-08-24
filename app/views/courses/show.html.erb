@@ -38,4 +38,6 @@
   <%= link_to 'Edit', edit_course_path(@course) %> |
 <% end %>
 <%= link_to 'Back', courses_path %>
-<%= link_to 'New Comment', new_course_comment_path(@course) %>
+<% unless current_user.admin? %>
+  <%= link_to 'New Comment', new_course_comment_path(@course) %>
+<% end%>

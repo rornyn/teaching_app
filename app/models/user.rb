@@ -22,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def current_month_courses
-    self.interested_courses.approved.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month)
+    self.interested_courses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month)
   end
 
 end

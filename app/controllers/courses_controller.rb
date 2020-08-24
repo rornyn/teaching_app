@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_action :admin_not_allowed
-  before_action :check_role, except: [:index, :show]
+  before_action :check_role, except: [:index, :show, :join_course]
   before_action :set_course, only: [:show, :edit, :update, :destroy, :join_program]
 
 
@@ -12,6 +12,15 @@ class CoursesController < ApplicationController
     else
       @courses = Course.approved.includes(:interested_courses).all
     end
+  end
+
+  def join_course
+    @courses = get_filter_data(params[:filter])
+    content = render_to_string(partial: 'table_data.html.erb') if request.format.json?
+    respond_to do |format|
+     format.html
+     format.json { render json: {data: content}}
+   end
   end
 
   # GET /courses/1
@@ -90,6 +99,20 @@ class CoursesController < ApplicationController
     def admin_not_allowed
       if current_user.admin?
         redirect_to admin_courses_path and return
+      end
+    end
+
+    def get_filter_data(filter)
+      courses = Course.joins(:interested_courses).where("interested_courses.student_id = ? and interested_courses.status = #{InterestedCourse.statuses["approved"]} ", current_user.id)
+      case filter
+      when Course::Filter[:upcoming]
+        courses.where("date(start_dt) > ? ", Time.now.to_date)
+      when Course::Filter[:past]
+        courses.where("date(end_dt) < ?", Time.now.to_date)
+      when Course::Filter[:current]
+        courses.where("date(start_dt) <= ? and date(end_dt) >= ? ", Time.now.to_date, Time.now.to_date)
+      else
+        courses
       end
     end
 end

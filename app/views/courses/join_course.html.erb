@@ -1,0 +1,42 @@
+<h1> Join Courses</h1>
+
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Filter
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <% Course::Filter.values.each do |filter| %>
+      <li><a href="javascript:void(0)" class="filter" data-filter_key="<%= filter%>"> <%= filter %></a></li>
+    <% end %>
+  </ul>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Start dt</th>
+      <th>End dt</th>
+      <th>Student length</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody id="join_course_data">
+    <%= render 'table_data'%>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+
+  $(".filter").on("click", function(event){
+    var filter = event.currentTarget.getAttribute('data-filter_key');
+    var url = "/courses/join_course.json?filter=" + filter
+    $.getJSON(url, function(response) {
+      $('#join_course_data').html(response.data);
+    });
+  });
+
+
+
+</script>

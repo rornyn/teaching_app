@@ -1,5 +1,5 @@
 class Admin::CoursesController < ApplicationController
-  before_action :set_course
+  before_action :set_course, except: [:index]
 
   def index
     @courses = Course.all

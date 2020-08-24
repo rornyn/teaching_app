@@ -17,7 +17,7 @@ class InterestedCoursesController < ApplicationController
 
   def update
     if current_user.teacher?
-      interested_course = @course.interested_courses.where(id: params[:id])
+      interested_course = @course.interested_courses.where(id: params[:id]).first
       interested_course.approved!
       flash[:notice] = "Request approved"
     else

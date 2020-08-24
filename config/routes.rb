@@ -11,8 +11,9 @@ Rails.application.routes.draw do
   end
 
   resources :courses do
+    get :join_course, on: :collection
     resources :interested_courses, only: [:create, :update, :index]
-    resources :comments, only: [:index, :create, :new]
+    resources :comments, except: [:edit, :update, :destroy]
   end
 
 
