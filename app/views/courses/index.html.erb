@@ -23,6 +23,7 @@
         <td><%= course.status %></td>
         <td><%= course.student_length %></td>
         <td><%= link_to 'Show', course %></td>
+        <td><%= link_to 'Comments', course_comments_path(course) %></td>
         <% if current_user.teacher? %>
           <td><%= link_to 'Edit', edit_course_path(course) %></td>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>

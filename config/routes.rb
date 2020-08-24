@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   resources :courses do
     resources :interested_courses, only: [:create, :update, :index]
-    resources :comments
+    resources :comments, only: [:index, :create, :new]
   end
 
 
